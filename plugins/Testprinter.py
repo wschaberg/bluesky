@@ -1,24 +1,26 @@
 """ BlueSky plugin template. The text you put here will be visible
     in BlueSky as the description of your plugin. """
 # Import the global bluesky objects. Uncomment the ones you need
-from bluesky import stack  #, settings, navdb, traf, sim, scr, tools
 import bluesky as bs
+from bluesky import stack, traffic, traf  #, settings, navdb, traf, sim, scr, tools
+from bluesky.traffic.asas import ConflictDetection
+from bluesky.traffic.asas import ConflictResolution
+from bluesky.traffic.asas import MVP
 
 ### Initialization function of your plugin. Do not change the name of this
 ### function, as it is the way BlueSky recognises this file as a plugin.
 def init_plugin():
-    stack.stack('PLUGIN MVPSPD')
-    stack.stack('RESO MVP')
-    stack.stack('ASAS CStateBased')
-    stack.stack("CRE 1 b737 52 2 0 Fl100 250")
-    stack.stack("CRECONFS 2 B737 1 10 2.5 310")
-    stack.stack("TRAILS ON")
-    # Addtional initilisation code
 
+    # Addtional initilisation code
+    stack.stack('ASAS ON')
+    stack.stack('PLUGIN MVPGON')
+    stack.stack('RESO MVPGON')
+    stack.stack('CRE 1 B737 52 2 0 FL100 280')
+    stack.stack('CRECONFS 2 B737 1 30 4.5 302')
     # Configuration parameters
     config = {
         # The name of your plugin
-        'plugin_name':     'EXAMPLE',
+        'plugin_name':     'Testprinter',
 
         # The type of this plugin. For now, only simulation plugins are possible.
         'plugin_type':     'sim',
@@ -62,7 +64,6 @@ def init_plugin():
 
     # init_plugin() should always return these two dicts.
     return config, stackfunctions
-
 
 ### Periodic update functions that are called by the simulation. You can replace
 ### this by anything, so long as you communicate this in init_plugin

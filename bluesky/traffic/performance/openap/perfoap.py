@@ -391,3 +391,6 @@ class OpenAP(PerfBase):
         )
         bs.scr.echo("Ceiling: %d km" % (self.hmax[acid] / 1000))
         # self.drag.astype(int)
+
+    def show_vminmax(self):
+        return {'vmin':self.vmin, 'vmax':self.vmax}

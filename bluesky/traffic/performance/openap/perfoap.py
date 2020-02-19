@@ -393,4 +393,4 @@ class OpenAP(PerfBase):
         # self.drag.astype(int)
 
     def show_vminmax(self):
-        return {'vmin':self.vmin, 'vmax':self.vmax}
+        return {'vmin':aero.vcas2tas(self.vmin, bs.traf.alt), 'vmax':aero.vcas2tas(self.vmax, bs.traf.alt)}

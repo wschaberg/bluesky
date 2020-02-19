@@ -4,6 +4,8 @@ import numpy as np
 import bluesky as bs
 from bluesky.tools.replaceable import ReplaceableSingleton
 from bluesky.tools.trafficarrays import TrafficArrays, RegisterElementParameters
+from bluesky import sim  #, settings, navdb, traf, sim, scr, tools
+import time
 
 
 bs.settings.set_variable_defaults(asas_mar=1.01)
@@ -16,6 +18,8 @@ class ConflictResolution(ReplaceableSingleton, TrafficArrays):
         self.swprio = False  # switch priority on/off
         self.priocode = ''  # select priority mode
         self.resopairs = set()  # Resolved conflicts that are still before CPA
+        self.resumelist = []
+        self.resumeloclist = []
 
         # Resolution factors:
         # set < 1 to maneuver only a fraction of the resolution
@@ -64,6 +68,8 @@ class ConflictResolution(ReplaceableSingleton, TrafficArrays):
         delpairs = set()
         changeactive = dict()
 
+        self.resumelist = []
+        self.resumeloclist = []
         # Look at all conflicts, also the ones that are solved but CPA is yet to come
         for conflict in self.resopairs:
             idx1, idx2 = bs.traf.id2idx(conflict)
@@ -109,6 +115,9 @@ class ConflictResolution(ReplaceableSingleton, TrafficArrays):
             else:
                 # Switch ASAS off for ownship if there are no other conflicts
                 # that this aircraft is involved in.
+                self.resumelist.append(bs.traf.id[idx1])
+                self.resumeloclist.append([bs.traf.lat[idx1], bs.traf.lon[idx1]])
+
                 changeactive[idx1] = changeactive.get(idx1, False)
                 # If conflict is solved, remove it from the resopairs list
                 delpairs.add(conflict)
